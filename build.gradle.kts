@@ -4,16 +4,16 @@ plugins {
     id("net.labymod.gradle.addon")
 }
 
-group = "org.example"
+group = "dev.tocraft"
 version = System.getenv().getOrDefault("VERSION", "1.0.0")
 
 labyMod {
-    defaultPackageName = "org.example" //change this to your main package name (used by all modules)
+    defaultPackageName = "dev.tocraft"
     addonInfo {
-        namespace = "example"
-        displayName = "ExampleAddon"
-        author = "Example Author"
-        description = "Example Description"
+        namespace = "musicplayer"
+        displayName = "Music Player"
+        author = "To_Craft"
+        description = "See what music you hear in Jellyfin!"
         minecraftVersion = "*"
         version = getVersion().toString()
     }
