@@ -1,0 +1,21 @@
+{
+  "musicplayer": {
+    "settings": {
+      "name": "Music Player",
+      "enabled": {
+        "name": "Enabled"
+      },
+      "jellyfinServerUrl": {
+        "name": "Jellyfin Server Url"
+      },
+      "supportCiderSh": {
+        "name": "Support Cider.sh"
+      }
+    },
+    "hudWidget": {
+      "music_player": {
+        "name": "Music Player"
+      }
+    }
+  }
+}

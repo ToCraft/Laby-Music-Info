@@ -1,0 +1,21 @@
+Player {
+  top: 0;
+  left: 0;
+  height: 34;
+  min-width: 170;
+  width: fit-content;
+  max-width: 400;
+
+  .text {
+    margin-top: 2;
+    height: fit-content;
+
+    Component {
+      left: 0;
+      top: 0;
+      max-lines: 1;
+      overflow-strategy: clip;
+      width: 100%;
+    }
+  }
+}
