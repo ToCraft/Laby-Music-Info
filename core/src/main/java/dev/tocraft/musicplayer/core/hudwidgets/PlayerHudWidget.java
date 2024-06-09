@@ -20,7 +20,7 @@ public class PlayerHudWidget extends WidgetHudWidget<PlayerHudWidgetConfig> {
   public void initialize(HudWidgetWidget widget) {
     super.initialize(widget);
 
-    PlayerWidget playerWidget = new PlayerWidget();
+    PlayerWidget playerWidget = new PlayerWidget(addon);
     widget.addChild(playerWidget);
     widget.addId("player");
   }

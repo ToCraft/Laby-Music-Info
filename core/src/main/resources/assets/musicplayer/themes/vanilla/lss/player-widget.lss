@@ -4,7 +4,7 @@ Player {
   height: 34;
   min-width: 170;
   width: fit-content;
-  max-width: 400;
+  max-width: 800;
 
   .text {
     margin-top: 2;

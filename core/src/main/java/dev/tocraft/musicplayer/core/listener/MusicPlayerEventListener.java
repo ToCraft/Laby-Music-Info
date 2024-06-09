@@ -16,9 +16,11 @@ public class MusicPlayerEventListener {
   @Subscribe
   public void onGameTick(GameTickEvent event) {
     if (event.phase() == Phase.PRE) {
-      if (addon.configuration().supportCiderSh().get()) {
-        // TODO: Handle Cider.sh API
-      }
+      /*if (addon.configuration().supportCiderSh().get() && !CiderService.isConnected()) {
+        CiderService.connect();
+      } else if (CiderService.isConnected()) {
+        CiderService.disconnect();
+      }*/
     }
   }
 }

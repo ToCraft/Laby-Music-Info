@@ -19,6 +19,8 @@ public class MusicPlayer extends LabyAddon<MusicPlayerConfig> {
     this.registerListener(new MusicPlayerEventListener(this));
 
     this.logger().info("Music Player is now enabled.");
+
+   //new CiderService().getCurrentTrack(this);
   }
 
   @Override
