@@ -3,7 +3,8 @@ package dev.tocraft.musicplayer.core.hudwidgets;
 import dev.tocraft.musicplayer.core.events.ServiceEndEvent;
 import dev.tocraft.musicplayer.core.events.SongUpdateEvent;
 import dev.tocraft.musicplayer.core.hudwidgets.PlayerTextHudWidget.PlayerTextHudWidgetConfig;
-import dev.tocraft.musicplayer.core.misc.ServiceProvider;
+import dev.tocraft.musicplayer.core.services.ServiceProvider;
+import java.util.Collection;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
@@ -16,6 +17,7 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
 
   private TextLine trackLine;
   private TextLine artistsLine;
+  private TextLine albumLine;
   private TextLine durationLine;
   private TextLine playTimeLine;
   private TextLine remainingTimeLine;
@@ -32,6 +34,7 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
 
     this.trackLine = super.createLine("Track", "Loading...");
     this.artistsLine = super.createLine("Artists", "Loading...");
+    this.albumLine = super.createLine("Album", "Loading...");
     this.durationLine = super.createLine("Duration", "Loading...");
     this.playTimeLine = super.createLine("Play Time", "Loading...");
     this.remainingTimeLine = super.createLine("Remaining Time", "Loading...");
@@ -41,6 +44,9 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
     }
     if (!config.showArtists().get()) {
       this.artistsLine.setState(State.DISABLED);
+    }
+    if (!config.showAlbum().get()) {
+      this.albumLine.setState(State.DISABLED);
     }
     if (!config.showDuration().get()) {
       this.durationLine.setState(State.DISABLED);
@@ -55,47 +61,35 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
 
   @Subscribe
   public void onSongUpdate(SongUpdateEvent event) {
-    if (event.isPlaying() && event.track() != null) {
-      // make all items visible
-      if (config.showTrack().get()) {
-        this.trackLine.setState(State.VISIBLE);
-      }
-      if (config.showArtists().get()) {
-        this.artistsLine.setState(State.VISIBLE);
-      }
-      if (config.showDuration().get()) {
-        this.durationLine.setState(State.VISIBLE);
-      }
-      if (config.showPlayTime().get()) {
-        this.playTimeLine.setState(State.VISIBLE);
-      }
-      if (config.showRemainingTime().get()) {
-        this.remainingTimeLine.setState(State.VISIBLE);
-      }
-      // set data
-      this.trackLine.updateAndFlush(event.track().name());
-      this.artistsLine.updateAndFlush(
-          event.track().artists().size() == 1 ? event.track().artists().getFirst()
-              : event.track().artists());
-      this.durationLine.updateAndFlush(formatTime(event.track().duration()));
-      this.playTimeLine.updateAndFlush(formatTime(event.track().playTime()));
-      this.remainingTimeLine.updateAndFlush(formatTime(event.track().remainingTime()));
-    } else {
-      // disable items - no song playing
-      if (config.showTrack().get()) {
-        this.trackLine.updateAndFlush("Nothing Playing");
-      }
-      if (config.showArtists().get()) {
-        this.artistsLine.setState(State.HIDDEN);
-      }
-      if (config.showDuration().get()) {
-        this.durationLine.setState(State.HIDDEN);
-      }
-      if (config.showPlayTime().get()) {
-        this.playTimeLine.setState(State.HIDDEN);
-      }
-      if (config.showRemainingTime().get()) {
-        this.remainingTimeLine.setState(State.HIDDEN);
+    setTextField(trackLine, event.track().name());
+    setTextField(artistsLine, event.track().artists());
+    setTextField(albumLine, event.track().album());
+    setTextField(durationLine, formatTime(event.track().duration()));
+    setTextField(playTimeLine, formatTime(event.track().playTime()));
+    setTextField(remainingTimeLine, formatTime(event.track().remainingTime()));
+  }
+
+  private static void setTextField(TextLine line, Object value) {
+    if (line.state() != State.DISABLED) {
+      if ((value instanceof String s && s.isBlank())
+          || (value instanceof Collection<?> c && c.isEmpty())
+          || value instanceof Integer i && i < 0) {
+        line.setState(State.HIDDEN);
+      } else {
+        line.setState(State.VISIBLE);
+        // reformat Iterable to a more beautiful layout
+        if (value instanceof Iterable<?> c) {
+          StringBuilder stringBuilder = new StringBuilder();
+          for (Object o : c) {
+            if (!stringBuilder.isEmpty()) {
+              stringBuilder.append(", ");
+            }
+            stringBuilder.append(o.toString());
+          }
+          line.updateAndFlush(stringBuilder.toString());
+        } else {
+          line.updateAndFlush(value);
+        }
       }
     }
   }
@@ -126,10 +120,14 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
   @Override
   public boolean isVisibleInGame() {
     return ServiceProvider.getCurrentService() != null
-        && ServiceProvider.getCurrentService().getState() != null;
+        && ServiceProvider.getCurrentService().isActive();
   }
 
   private String formatTime(int durationInMillis) {
+    if (durationInMillis < 0) {
+      return "";
+    }
+
     int second = durationInMillis % 60;
     int minute = (durationInMillis / 60) % 60;
 
@@ -143,6 +141,8 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
     @SwitchSetting
     private final ConfigProperty<Boolean> showArtists = new ConfigProperty<>(true);
     @SwitchSetting
+    private final ConfigProperty<Boolean> showAlbum = new ConfigProperty<>(true);
+    @SwitchSetting
     private final ConfigProperty<Boolean> showDuration = new ConfigProperty<>(false);
     @SwitchSetting
     private final ConfigProperty<Boolean> showPlayTime = new ConfigProperty<>(false);
@@ -155,6 +155,10 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
 
     public ConfigProperty<Boolean> showArtists() {
       return this.showArtists;
+    }
+
+    public ConfigProperty<Boolean> showAlbum() {
+      return this.showAlbum;
     }
 
     public ConfigProperty<Boolean> showDuration() {

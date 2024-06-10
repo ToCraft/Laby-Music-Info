@@ -9,12 +9,18 @@ public interface Track {
 
   String name();
 
+  String album();
+
   int duration();
 
   int playTime();
 
   default int remainingTime() {
-    return duration() - playTime();
+    if (duration() < 0 || playTime() < 0) {
+      return -1;
+    } else {
+      return duration() - playTime();
+    }
   }
 
   List<String> artists();

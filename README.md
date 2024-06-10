@@ -9,10 +9,8 @@ It can show you:
 - remaining time
 
 Right now, the following services are supported:
-- [Cider](https://github.com/ciderapp/Cider)
-- [Cider2](https://cider.sh/)
-- Youtube
-- YoutubeV2
+- [Cider Classic](https://github.com/ciderapp/Cider)
+- [Cider](https://cider.sh/)
 - [Spotify](https://open.spotify.com/download)
 - [beefweb](https://github.com/hyperblast/beefweb)
 - [Tidal](https://offer.tidal.com/download)

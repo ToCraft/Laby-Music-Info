@@ -2,7 +2,7 @@ package dev.tocraft.musicplayer.core;
 
 import dev.tocraft.musicplayer.core.commands.ReconnectCommand;
 import dev.tocraft.musicplayer.core.hudwidgets.PlayerTextHudWidget;
-import dev.tocraft.musicplayer.core.misc.ServiceProvider;
+import dev.tocraft.musicplayer.core.services.ServiceProvider;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
 

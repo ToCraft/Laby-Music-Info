@@ -2,8 +2,8 @@ package dev.tocraft.musicplayer.core.events;
 
 import dev.tocraft.musicplayer.core.misc.Track;
 import net.labymod.api.event.Event;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
-public record SongUpdateEvent(@Nullable Track track, boolean isPlaying) implements Event {
+public record SongUpdateEvent(@NotNull Track track) implements Event {
 
 }

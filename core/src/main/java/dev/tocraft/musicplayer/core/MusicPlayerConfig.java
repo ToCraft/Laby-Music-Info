@@ -1,31 +1,25 @@
 package dev.tocraft.musicplayer.core;
 
-import dev.tocraft.musicplayer.core.misc.ServiceProvider.ServiceType;
+import dev.tocraft.musicplayer.core.services.ServiceProvider;
+import dev.tocraft.musicplayer.core.services.ServiceProvider.ServiceType;
 import net.labymod.api.addon.AddonConfig;
+import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.ButtonSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
-import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
+import net.labymod.api.configuration.settings.Setting;
+import net.labymod.api.util.MethodOrder;
 
 @SuppressWarnings("unused")
 @ConfigName("settings")
 public class MusicPlayerConfig extends AddonConfig {
-
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
   @DropdownSetting
-  private final ConfigProperty<ServiceType> serviceType = new ConfigProperty<>(ServiceType.CIDER);
-
-  @TextFieldSetting
-  private final ConfigProperty<String> spotifyToken = new ConfigProperty<>("");
-
-  @TextFieldSetting
-  private final ConfigProperty<String> youtubePassword = new ConfigProperty<>("");
-
-  @TextFieldSetting
-  private final ConfigProperty<String> youtubeToken = new ConfigProperty<>("");
+  private final ConfigProperty<ServiceType> serviceType = new ConfigProperty<>(
+      ServiceType.CIDER_CLASSIC);
 
   @Override
   public ConfigProperty<Boolean> enabled() {
@@ -36,15 +30,9 @@ public class MusicPlayerConfig extends AddonConfig {
     return this.serviceType;
   }
 
-  public ConfigProperty<String> spotifyToken() {
-    return this.spotifyToken;
-  }
-
-  public ConfigProperty<String> youtubePassword() {
-    return this.youtubePassword;
-  }
-
-  public ConfigProperty<String> youtubeToken() {
-    return this.youtubeToken;
+  @ButtonSetting
+  @MethodOrder(after = "serviceType")
+  public void reconnect(Setting setting) {
+    ServiceProvider.connect();
   }
 }

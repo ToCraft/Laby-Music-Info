@@ -1,15 +1,14 @@
 package dev.tocraft.musicplayer.core.commands;
 
 import dev.tocraft.musicplayer.core.MusicPlayer;
-import dev.tocraft.musicplayer.core.MusicPlayerConfig;
-import dev.tocraft.musicplayer.core.misc.ServiceProvider;
+import dev.tocraft.musicplayer.core.services.ServiceProvider;
 import net.labymod.api.client.chat.command.Command;
 
 public class ReconnectCommand extends Command {
   private final MusicPlayer addon;
 
   public ReconnectCommand(MusicPlayer addon) {
-    super("reconnect", "musicplayer:reconnect");
+    super("musicplayer:reconnect", "reconnect");
     this.addon = addon;
   }
 

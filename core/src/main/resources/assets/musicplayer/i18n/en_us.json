@@ -8,14 +8,9 @@
       "serviceType": {
         "name": "Service Type"
       },
-      "spotifyToken": {
-        "name": "Spotify Token"
-      },
-      "youtubePassword": {
-        "name": "YouTube Password"
-      },
-      "youtubeToken": {
-        "name": "YouTube Token"
+      "reconnect": {
+        "name": "Trigger Reconnect with Music Provider",
+        "text": "Reconnect"
       }
     },
     "hudWidget": {
@@ -26,6 +21,9 @@
         },
         "showArtists": {
           "name": "Show Artists"
+        },
+        "showAlbum": {
+          "name": "Show Album"
         },
         "showDuration": {
           "name": "Show Duration"
