@@ -1,9 +1,8 @@
 package dev.tocraft.musicplayer.core;
 
-import dev.tocraft.musicplayer.core.listener.MusicPlayerEventListener;
-import dev.tocraft.musicplayer.core.hudwidgets.PlayerHudWidget;
+import dev.tocraft.musicplayer.core.hudwidgets.PlayerTextHudWidget;
+import dev.tocraft.musicplayer.core.misc.ServiceProvider;
 import net.labymod.api.addon.LabyAddon;
-import net.labymod.api.client.gui.hud.HudWidgetRegistry;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
 @AddonMain
@@ -13,14 +12,14 @@ public class MusicPlayer extends LabyAddon<MusicPlayerConfig> {
   protected void enable() {
     this.registerSettingCategory();
 
-    HudWidgetRegistry registry = this.labyAPI().hudWidgetRegistry();
-    registry.register(new PlayerHudWidget("music_player", this));
+    ServiceProvider.initialize(this.labyAPI());
+    ServiceProvider.updateCurrentService(configuration());
+    configuration().serviceType()
+        .addChangeListener(type -> ServiceProvider.updateCurrentService(configuration()));
 
-    this.registerListener(new MusicPlayerEventListener(this));
+    this.labyAPI().hudWidgetRegistry().register(new PlayerTextHudWidget("text_music_player", this));
 
     this.logger().info("Music Player is now enabled.");
-
-   //new CiderService().getCurrentTrack(this);
   }
 
   @Override

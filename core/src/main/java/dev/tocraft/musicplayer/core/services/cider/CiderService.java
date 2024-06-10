@@ -7,6 +7,7 @@ import dev.tocraft.musicplayer.core.misc.Track;
 import dev.tocraft.musicplayer.core.services.AbstractService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import net.labymod.api.client.gui.icon.Icon;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -61,6 +62,7 @@ public class CiderService extends AbstractService {
 
   private @Nullable Track currentTrack = null;
 
+  @Nullable
   @Override
   public Track getCurrentTrack(MusicPlayer addon) {
     return currentTrack;
@@ -85,13 +87,8 @@ public class CiderService extends AbstractService {
       }
 
       @Override
-      public String artist() {
-        return data.get("artistName").getAsString();
-      }
-
-      @Override
-      public String album() {
-        return data.get("albumName").getAsString();
+      public List<String> artists() {
+        return List.of(data.get("artistName").getAsString());
       }
 
       @Override

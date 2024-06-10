@@ -1,7 +1,9 @@
 package dev.tocraft.musicplayer.core.misc;
 
 import net.labymod.api.client.gui.icon.Icon;
+import java.util.List;
 
+@SuppressWarnings("unused")
 public interface Track {
 
   String name();
@@ -10,9 +12,7 @@ public interface Track {
 
   float playTime();
 
-  String artist();
-
-  String album();
+  List<String> artists();
 
   Icon cover();
 }

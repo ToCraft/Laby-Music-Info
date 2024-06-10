@@ -19,11 +19,13 @@ import java.util.Map;
 import net.labymod.api.util.logging.Logging;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractService {
 
   private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+  @Nullable
   public abstract Track getCurrentTrack(MusicPlayer addon);
 
   public static JsonElement getJsonResponseFromUrl(URL url, Logging logger) {
