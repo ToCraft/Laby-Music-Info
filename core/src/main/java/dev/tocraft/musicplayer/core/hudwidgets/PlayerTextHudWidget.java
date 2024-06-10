@@ -1,6 +1,6 @@
 package dev.tocraft.musicplayer.core.hudwidgets;
 
-import dev.tocraft.musicplayer.core.MusicPlayer;
+import dev.tocraft.musicplayer.core.events.ServiceEndEvent;
 import dev.tocraft.musicplayer.core.events.SongUpdateEvent;
 import dev.tocraft.musicplayer.core.hudwidgets.PlayerTextHudWidget.PlayerTextHudWidgetConfig;
 import dev.tocraft.musicplayer.core.misc.ServiceProvider;
@@ -19,16 +19,16 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
   private TextLine durationLine;
   private TextLine playTimeLine;
   private TextLine remainingTimeLine;
-  private final MusicPlayer addon;
 
-  public PlayerTextHudWidget(String id, MusicPlayer addon) {
+  public PlayerTextHudWidget(String id) {
     super(id, PlayerTextHudWidgetConfig.class);
-    this.addon = addon;
   }
 
   @Override
   public void load(PlayerTextHudWidgetConfig config) {
     super.load(config);
+
+    ServiceProvider.connect();
 
     this.trackLine = super.createLine("Track", "Loading...");
     this.artistsLine = super.createLine("Artists", "Loading...");
@@ -79,27 +79,54 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
               : event.track().artists());
       this.durationLine.updateAndFlush(formatTime(event.track().duration()));
       this.playTimeLine.updateAndFlush(formatTime(event.track().playTime()));
-      this.remainingTimeLine.updateAndFlush(
-          formatTime(event.track().remainingTime()));
+      this.remainingTimeLine.updateAndFlush(formatTime(event.track().remainingTime()));
     } else {
       // disable items - no song playing
-      this.trackLine.updateAndFlush("Nothing playing");
+      if (config.showTrack().get()) {
+        this.trackLine.updateAndFlush("Nothing Playing");
+      }
+      if (config.showArtists().get()) {
+        this.artistsLine.setState(State.HIDDEN);
+      }
+      if (config.showDuration().get()) {
+        this.durationLine.setState(State.HIDDEN);
+      }
+      if (config.showPlayTime().get()) {
+        this.playTimeLine.setState(State.HIDDEN);
+      }
+      if (config.showRemainingTime().get()) {
+        this.remainingTimeLine.setState(State.HIDDEN);
+      }
+    }
+  }
+
+  @Subscribe
+  public void onServiceEnd(ServiceEndEvent event) {
+    // disable items - no song playing
+    if (!event.error().isBlank()) {
+      this.trackLine.updateAndFlush(event.error());
+      this.trackLine.setState(State.VISIBLE);
+    } else if (config.showTrack().get()) {
+      this.trackLine.setState(State.HIDDEN);
+    }
+    if (config.showArtists().get()) {
       this.artistsLine.setState(State.HIDDEN);
+    }
+    if (config.showDuration().get()) {
       this.durationLine.setState(State.HIDDEN);
+    }
+    if (config.showPlayTime().get()) {
       this.playTimeLine.setState(State.HIDDEN);
+    }
+    if (config.showRemainingTime().get()) {
       this.remainingTimeLine.setState(State.HIDDEN);
     }
   }
 
   @Override
-
   public boolean isVisibleInGame() {
-    if (!addon.configuration().enabled().get()) {
-      return false;
-    } else {
-      return ServiceProvider.getCurrentService() != null
-          && ServiceProvider.getCurrentService().getState() != null;
-    }
+    return ServiceProvider.getCurrentService() != null
+        && ServiceProvider.getCurrentService().getState() != null;
   }
 
   private String formatTime(int durationInMillis) {

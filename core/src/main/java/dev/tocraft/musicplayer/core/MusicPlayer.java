@@ -1,5 +1,6 @@
 package dev.tocraft.musicplayer.core;
 
+import dev.tocraft.musicplayer.core.commands.ReconnectCommand;
 import dev.tocraft.musicplayer.core.hudwidgets.PlayerTextHudWidget;
 import dev.tocraft.musicplayer.core.misc.ServiceProvider;
 import net.labymod.api.addon.LabyAddon;
@@ -11,13 +12,14 @@ public class MusicPlayer extends LabyAddon<MusicPlayerConfig> {
   @Override
   protected void enable() {
     this.registerSettingCategory();
+    this.registerCommand(new ReconnectCommand(configuration()));
 
     ServiceProvider.initialize(this.labyAPI());
     ServiceProvider.updateCurrentService(configuration());
     configuration().serviceType()
         .addChangeListener(type -> ServiceProvider.updateCurrentService(configuration()));
 
-    this.labyAPI().hudWidgetRegistry().register(new PlayerTextHudWidget("text_music_player", this));
+    this.labyAPI().hudWidgetRegistry().register(new PlayerTextHudWidget("text_music_player"));
 
     this.logger().info("Music Player is now enabled.");
   }
