@@ -20,7 +20,22 @@
     },
     "hudWidget": {
       "text_music_player": {
-        "name": "Music Player"
+        "name": "Music Player",
+        "showTrack": {
+          "name": "Show Track"
+        },
+        "showArtists": {
+          "name": "Show Artists"
+        },
+        "showDuration": {
+          "name": "Show Duration"
+        },
+        "showPlayTime": {
+          "name": "Show Play Time"
+        },
+        "showRemainingTime": {
+          "name": "Show Remaining Time"
+        }
       }
     }
   }
