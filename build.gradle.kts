@@ -58,6 +58,7 @@ subprojects {
         maven("https://libraries.minecraft.net/")
         maven("https://repo.spongepowered.org/repository/maven-public/")
         maven("https://maven.resourcefulbees.com/repository/thatgravyboat/")
+        maven("https://jitpack.io")
     }
 }
 

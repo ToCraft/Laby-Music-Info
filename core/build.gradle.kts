@@ -8,6 +8,7 @@ dependencies {
     api(project(":api"))
 
     maven("https://maven.resourcefulbees.com/repository/thatgravyboat", "tech.thatgravyboat:jukebox-jvm:1.0-SNAPSHOT")
+    maven("https://jitpack.io/", "com.github.LabyStudio:java-spotify-api:1.2.0")
 }
 
 labyModProcessor {

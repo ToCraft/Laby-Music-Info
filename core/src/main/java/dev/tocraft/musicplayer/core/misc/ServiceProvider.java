@@ -1,8 +1,10 @@
 package dev.tocraft.musicplayer.core.misc;
 
-import dev.tocraft.musicplayer.core.MusicPlayerConfig;
+import de.labystudio.spotifyapi.SpotifyAPIFactory;
+import dev.tocraft.musicplayer.core.MusicPlayer;
 import dev.tocraft.musicplayer.core.events.ServiceEndEvent;
 import dev.tocraft.musicplayer.core.events.SongUpdateEvent;
+import dev.tocraft.musicplayer.core.services.SpotifyService;
 import java.util.List;
 import net.labymod.api.LabyAPI;
 import net.labymod.api.client.gui.icon.Icon;
@@ -17,7 +19,6 @@ import tech.thatgravyboat.jukebox.api.service.BaseService;
 import tech.thatgravyboat.jukebox.impl.apple.AppleService;
 import tech.thatgravyboat.jukebox.impl.cider.CiderService;
 import tech.thatgravyboat.jukebox.impl.foobar.FoobarService;
-import tech.thatgravyboat.jukebox.impl.spotify.SpotifyService;
 import tech.thatgravyboat.jukebox.impl.tidal.TidalService;
 import tech.thatgravyboat.jukebox.impl.youtube.YoutubeService;
 import tech.thatgravyboat.jukebox.impl.youtubev2.YoutubeServiceV2;
@@ -26,19 +27,19 @@ public class ServiceProvider {
 
   @Nullable
   private static BaseService currentService = null;
-  @Nullable
-  private static ServiceType currentServiceType = null;
 
   public enum ServiceType {
-    CIDER, CIDER2, YOUTUBE, YOUTUBE2, SPOTIFY, BEEFWEB, TIDAL;
+    CIDER, CIDER2, YOUTUBE, YOUTUBE2, SPOTIFY1, SPOTIFY2, BEEFWEB, TIDAL;
 
-    public BaseService getService(MusicPlayerConfig config) {
+    public BaseService getService(MusicPlayer addon) {
       return switch (this) {
         case CIDER -> new AppleService();
         case CIDER2 -> new CiderService();
-        case YOUTUBE -> new YoutubeService(config.youtubePassword().get());
-        case YOUTUBE2 -> new YoutubeServiceV2(config.youtubePassword().get());
-        case SPOTIFY -> new SpotifyService(config.spotifyToken().get());
+        case YOUTUBE -> new YoutubeService(addon.configuration().youtubePassword().get());
+        case YOUTUBE2 -> new YoutubeServiceV2(addon.configuration().youtubeToken().get());
+        case SPOTIFY1 -> new tech.thatgravyboat.jukebox.impl.spotify.SpotifyService(
+            addon.configuration().spotifyToken().get());
+        case SPOTIFY2 -> new SpotifyService(addon.labyAPI(), SpotifyAPIFactory.create());
         case BEEFWEB -> new FoobarService();
         case TIDAL -> new TidalService();
       };
@@ -135,20 +136,22 @@ public class ServiceProvider {
     }
   };
 
-  public static void updateCurrentService(MusicPlayerConfig config) {
+  public static void updateCurrentService(MusicPlayer addon) {
     if (currentService != null) {
       currentService.unregisterListener(EventType.Companion.getUPDATE(), onSongUpdate);
       currentService.unregisterListener(EventType.Companion.getSERVICE_ENDED(), onConnectionEnd);
       currentService.unregisterListener(EventType.Companion.getSERVICE_ERROR(), onCaughtError);
       currentService.unregisterListener(EventType.Companion.getSONG_CHANGE(), onSongChange);
+      currentService.unregisterListener(EventType.Companion.getSERVICE_UNAUTHORIZED(), onUnauthorized);
       currentService.stop();
     }
-    currentServiceType = config.serviceType().get();
-    currentService = currentServiceType.getService(config);
+    ServiceType currentServiceType = addon.configuration().serviceType().get();
+    currentService = currentServiceType.getService(addon);
     currentService.registerListener(EventType.Companion.getUPDATE(), onSongUpdate);
     currentService.registerListener(EventType.Companion.getSERVICE_ENDED(), onConnectionEnd);
     currentService.registerListener(EventType.Companion.getSERVICE_ERROR(), onCaughtError);
     currentService.registerListener(EventType.Companion.getSONG_CHANGE(), onSongChange);
+    currentService.registerListener(EventType.Companion.getSERVICE_UNAUTHORIZED(), onUnauthorized);
   }
 
   public static void connect() {

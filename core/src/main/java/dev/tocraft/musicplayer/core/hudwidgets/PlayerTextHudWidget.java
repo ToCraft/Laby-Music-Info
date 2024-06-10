@@ -55,7 +55,7 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
 
   @Subscribe
   public void onSongUpdate(SongUpdateEvent event) {
-    if (event.isPlaying()) {
+    if (event.isPlaying() && event.track() != null) {
       // make all items visible
       if (config.showTrack().get()) {
         this.trackLine.setState(State.VISIBLE);

@@ -1,20 +1,21 @@
 package dev.tocraft.musicplayer.core.commands;
 
+import dev.tocraft.musicplayer.core.MusicPlayer;
 import dev.tocraft.musicplayer.core.MusicPlayerConfig;
 import dev.tocraft.musicplayer.core.misc.ServiceProvider;
 import net.labymod.api.client.chat.command.Command;
 
 public class ReconnectCommand extends Command {
-  private final MusicPlayerConfig config;
+  private final MusicPlayer addon;
 
-  public ReconnectCommand(MusicPlayerConfig config) {
+  public ReconnectCommand(MusicPlayer addon) {
     super("reconnect", "musicplayer:reconnect");
-    this.config = config;
+    this.addon = addon;
   }
 
   @Override
   public boolean execute(String prefix, String[] arguments) {
-    ServiceProvider.updateCurrentService(config);
+    ServiceProvider.updateCurrentService(addon);
     ServiceProvider.connect();
     this.displayMessage("Trying to reconnect now!");
     return true;

@@ -12,12 +12,12 @@ public class MusicPlayer extends LabyAddon<MusicPlayerConfig> {
   @Override
   protected void enable() {
     this.registerSettingCategory();
-    this.registerCommand(new ReconnectCommand(configuration()));
+    this.registerCommand(new ReconnectCommand(this));
 
     ServiceProvider.initialize(this.labyAPI());
-    ServiceProvider.updateCurrentService(configuration());
+    ServiceProvider.updateCurrentService(this);
     configuration().serviceType()
-        .addChangeListener(type -> ServiceProvider.updateCurrentService(configuration()));
+        .addChangeListener(type -> ServiceProvider.updateCurrentService(this));
 
     this.labyAPI().hudWidgetRegistry().register(new PlayerTextHudWidget("text_music_player"));
 
