@@ -1,0 +1,42 @@
+{
+  "musicplayer": {
+    "settings": {
+      "name": "Music Player",
+      "enabled": {
+        "name": "Aktiviert"
+      },
+      "serviceType": {
+        "name": "Service Typ"
+      },
+      "spotifyToken": {
+        "name": "Spotify Schlüssel"
+      },
+      "youtubePassword": {
+        "name": "YouTube Passwort"
+      },
+      "youtubeToken": {
+        "name": "YouTube Schlüssel"
+      }
+    },
+    "hudWidget": {
+      "text_music_player": {
+        "name": "Music Player",
+        "showTrack": {
+          "name": "Zeige Song"
+        },
+        "showArtists": {
+          "name": "Zeige Künstler"
+        },
+        "showDuration": {
+          "name": "Zeige Länge"
+        },
+        "showPlayTime": {
+          "name": "Zeige Laufzeit"
+        },
+        "showRemainingTime": {
+          "name": "Zeige verbleibende Zeit"
+        }
+      }
+    }
+  }
+}
