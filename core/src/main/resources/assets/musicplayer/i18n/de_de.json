@@ -11,6 +11,10 @@
       "reconnect": {
         "name": "Mit dem Musikprogramm neu verbinden",
         "text": "Verbinden"
+      },
+      "autoReconnect": {
+        "name": "Automatisch neuverbinden",
+        "description": "Hoher Einfluss auf Leistung"
       }
     },
     "hudWidget": {

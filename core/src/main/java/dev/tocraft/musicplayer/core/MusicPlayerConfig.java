@@ -14,16 +14,23 @@ import net.labymod.api.util.MethodOrder;
 @SuppressWarnings("unused")
 @ConfigName("settings")
 public class MusicPlayerConfig extends AddonConfig {
+
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
   @DropdownSetting
-  private final ConfigProperty<ServiceType> serviceType = new ConfigProperty<>(
-      ServiceType.CIDER_CLASSIC);
+  private final ConfigProperty<ServiceType> serviceType = new ConfigProperty<>(ServiceType.CIDER_CLASSIC);
+
+  @SwitchSetting
+  private final ConfigProperty<Boolean> autoReconnect = new ConfigProperty<>(false);
 
   @Override
   public ConfigProperty<Boolean> enabled() {
     return this.enabled;
+  }
+
+  public ConfigProperty<Boolean> autoReconnect() {
+    return this.autoReconnect;
   }
 
   public ConfigProperty<ServiceType> serviceType() {
