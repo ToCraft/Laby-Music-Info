@@ -3,8 +3,6 @@ package dev.tocraft.musicplayer.core.misc;
 import dev.tocraft.musicplayer.core.MusicPlayerConfig;
 import dev.tocraft.musicplayer.core.events.SongUpdateEvent;
 import java.util.List;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import net.labymod.api.LabyAPI;
 import net.labymod.api.client.gui.icon.Icon;
 import org.jetbrains.annotations.Nullable;
@@ -22,24 +20,23 @@ import tech.thatgravyboat.jukebox.impl.youtubev2.YoutubeServiceV2;
 public class ServiceProvider {
 
   @Nullable
-  private static BaseService currentService = new AppleService();
+  private static BaseService currentService = null;
 
   public enum ServiceType {
     CIDER, CIDER2, YOUTUBE, YOUTUBE2, SPOTIFY, BEEFWEB, TIDAL;
-  }
 
-  private static BaseService getService(ServiceType service, MusicPlayerConfig config) {
-    return switch (service) {
-      case CIDER -> new AppleService();
-      case CIDER2 -> new CiderService();
-      case YOUTUBE -> new YoutubeService(config.youtubePassword().get());
-      case YOUTUBE2 -> new YoutubeServiceV2(config.youtubePassword().get());
-      case SPOTIFY -> new SpotifyService(config.spotifyToken().get());
-      case BEEFWEB -> new FoobarService();
-      case TIDAL -> new TidalService();
-    };
+    public BaseService getService(MusicPlayerConfig config) {
+      return switch (this) {
+        case CIDER -> new AppleService();
+        case CIDER2 -> new CiderService();
+        case YOUTUBE -> new YoutubeService(config.youtubePassword().get());
+        case YOUTUBE2 -> new YoutubeServiceV2(config.youtubePassword().get());
+        case SPOTIFY -> new SpotifyService(config.spotifyToken().get());
+        case BEEFWEB -> new FoobarService();
+        case TIDAL -> new TidalService();
+      };
+    }
   }
-
 
   private static LabyAPI labyAPI = null;
 
@@ -47,9 +44,8 @@ public class ServiceProvider {
     ServiceProvider.labyAPI = labyAPI;
   }
 
-  private static final Function1<UpdateEvent, Unit> onSongUpdate = event -> {
+  private static final JukeboxEventHandler<UpdateEvent> onSongUpdate = event -> {
     if (labyAPI != null) {
-      System.out.println("GOT HE");
       labyAPI.eventBus().fire(new SongUpdateEvent(new Track() {
         @Override
         public String name() {
@@ -62,7 +58,7 @@ public class ServiceProvider {
         }
 
         @Override
-        public float playTime() {
+        public int playTime() {
           return event.getState().getSongState().getProgress();
         }
 
@@ -75,21 +71,18 @@ public class ServiceProvider {
         public Icon cover() {
           return Icon.url(event.getState().getSong().getCover());
         }
-      }));
+      }, event.getState().isPlaying()));
     }
-    return Unit.INSTANCE;
   };
 
   public static void updateCurrentService(MusicPlayerConfig config) {
-    /*if (currentService != null) {
+    if (currentService != null) {
       currentService.unregisterListener(EventType.Companion.getUPDATE(), onSongUpdate);
+      currentService.stop();
     }
-    currentService = getService(config.serviceType().get(), config);*/
+    currentService = config.serviceType().get().getService(config);
     currentService.registerListener(EventType.Companion.getUPDATE(), onSongUpdate);
-    currentService.registerListener(EventType.Companion.getUPDATE(), updateEvent -> {
-      System.out.println("GOT HEREE");
-      return Unit.INSTANCE;
-    });
+    currentService.start();
   }
 
   @Nullable

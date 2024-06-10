@@ -1,7 +1,7 @@
 package dev.tocraft.musicplayer.core.misc;
 
-import net.labymod.api.client.gui.icon.Icon;
 import java.util.List;
+import net.labymod.api.client.gui.icon.Icon;
 
 @SuppressWarnings("unused")
 public interface Track {
@@ -10,7 +10,11 @@ public interface Track {
 
   int duration();
 
-  float playTime();
+  int playTime();
+
+  default int remainingTime() {
+    return duration() - playTime();
+  }
 
   List<String> artists();
 
