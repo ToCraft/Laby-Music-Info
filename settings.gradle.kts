@@ -1,4 +1,4 @@
-rootProject.name = "labymod4-music-player"
+rootProject.name = "labymod4-music-info"
 
 pluginManagement {
     val labyGradlePluginVersion = "0.4.0"

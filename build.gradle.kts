@@ -8,10 +8,10 @@ group = "dev.tocraft"
 version = System.getenv().getOrDefault("VERSION", "1.0.0")
 
 labyMod {
-    defaultPackageName = "dev.tocraft.musicplayer"
+    defaultPackageName = "dev.tocraft.musicinfo"
     addonInfo {
-        namespace = "musicplayer"
-        displayName = "Music Player"
+        namespace = "musicinfo"
+        displayName = "Music Info"
         author = "To_Craft"
         description = "See what music you hear!"
         minecraftVersion = "*"

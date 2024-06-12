@@ -1,4 +1,4 @@
-# LabyMod Music Player
+# LabyMod Music Info Addon
 
 This small LabyMod addon features  a small music player, where you can see what song you're listing to!
 It can show you:

@@ -1,0 +1,69 @@
+{
+  "musicinfo": {
+    "settings": {
+      "name": "Music Info",
+      "enabled": {
+        "name": "Aktiviert"
+      },
+      "serviceType": {
+        "name": "Service Typ"
+      },
+      "reconnect": {
+        "name": "Mit dem Musikprogramm neu verbinden",
+        "text": "Verbinden"
+      },
+      "autoReconnect": {
+        "name": "Automatisch neuverbinden",
+        "description": "Hoher Einfluss auf Leistung"
+      },
+      "jellyfin": {
+        "name": "Jellyfin",
+        "serverURL": {
+          "name": "Server URL"
+        },
+        "clientName": {
+          "name": "Zu beobachtender Client",
+          "description": "Optional. Empfohlen, wenn mehrere clients eines Nutzers gleichzeitig Jellyfin verwenden, um die richtigen Infos anzuzeigen."
+        },
+        "accessToken": {
+          "name": "Schlüssel"
+        },
+        "username": {
+          "name": "Benutzername"
+        },
+        "password": {
+          "name": "Passwort",
+          "description": "Variable wird nach dem generieren eines Schlüssels gelöscht."
+        },
+        "generateAccessToken": {
+          "name": "Schlüssel generieren",
+          "text": "Generieren",
+          "description": "Setzt das Benutzernamen- & das Passwort-Feld zurück."
+        }
+      }
+    },
+    "hudWidget": {
+      "text_music_info": {
+        "name": "Music Info",
+        "showTrack": {
+          "name": "Zeige Song"
+        },
+        "showArtists": {
+          "name": "Zeige Künstler"
+        },
+        "showAlbum": {
+          "name": "Zeige Album"
+        },
+        "showDuration": {
+          "name": "Zeige Länge"
+        },
+        "showPlayTime": {
+          "name": "Zeige Laufzeit"
+        },
+        "showRemainingTime": {
+          "name": "Zeige verbleibende Zeit"
+        }
+      }
+    }
+  }
+}
