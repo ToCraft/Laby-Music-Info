@@ -15,6 +15,28 @@
       "autoReconnect": {
         "name": "Automatisch neuverbinden",
         "description": "Hoher Einfluss auf Leistung"
+      },
+      "jellyfin": {
+        "name": "Jellyfin",
+        "serverURL": {
+          "name": "Server URL"
+        },
+        "accessToken": {
+          "name": "Schlüssel"
+        },
+        "username": {
+          "name": "Benutzername",
+          "description": "Wird beim Generieren eines Schlüssels zurückgesetzt."
+        },
+        "password": {
+          "name": "Passwort",
+          "description": "Wird beim Generieren eines Schlüssels zurückgesetzt."
+        },
+        "generateAccessToken": {
+          "name": "Schlüssel generieren",
+          "text": "Generieren",
+          "description": "Setzt das Benutzernamen- & das Passwort-Feld zurück."
+        }
       }
     },
     "hudWidget": {

@@ -123,13 +123,13 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
         && ServiceProvider.getCurrentService().isActive();
   }
 
-  private String formatTime(int durationInMillis) {
-    if (durationInMillis < 0) {
+  private String formatTime(int durationInSeconds) {
+    if (durationInSeconds < 0) {
       return "";
     }
 
-    int second = durationInMillis % 60;
-    int minute = (durationInMillis / 60) % 60;
+    int second = durationInSeconds % 60;
+    int minute = (durationInSeconds / 60) % 60;
 
     return String.format("%02d:%02d", minute, second);
   }

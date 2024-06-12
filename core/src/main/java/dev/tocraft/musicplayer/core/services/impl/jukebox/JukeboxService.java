@@ -1,12 +1,12 @@
 package dev.tocraft.musicplayer.core.services.impl.jukebox;
 
+import dev.tocraft.musicplayer.core.MusicPlayer;
 import dev.tocraft.musicplayer.core.events.ServiceEndEvent;
 import dev.tocraft.musicplayer.core.events.SongUpdateEvent;
 import dev.tocraft.musicplayer.core.misc.Track;
 import dev.tocraft.musicplayer.core.services.AbstractService;
 import java.util.List;
 import kotlin.Unit;
-import net.labymod.api.LabyAPI;
 import net.labymod.api.client.gui.icon.Icon;
 import tech.thatgravyboat.jukebox.api.events.EventType;
 import tech.thatgravyboat.jukebox.api.service.BaseService;
@@ -16,11 +16,11 @@ public class JukeboxService extends AbstractService {
 
   private final BaseService delegate;
 
-  public JukeboxService(LabyAPI labyAPI, BaseService delegate) {
+  public JukeboxService(BaseService delegate) {
     this.delegate = delegate;
     this.delegate.registerListener(EventType.Companion.getUPDATE(), event -> {
-      if (labyAPI != null) {
-        labyAPI.eventBus().fire(new SongUpdateEvent(new Track() {
+      if (MusicPlayer.getLabyAPI() != null) {
+        MusicPlayer.getLabyAPI().eventBus().fire(new SongUpdateEvent(new Track() {
           @Override
           public String name() {
             return event.getState().getSong().getTitle();
@@ -55,22 +55,22 @@ public class JukeboxService extends AbstractService {
       return Unit.INSTANCE;
     });
     delegate.registerListener(EventType.Companion.getSERVICE_ENDED(), event -> {
-      if (labyAPI != null) {
+      if (MusicPlayer.getLabyAPI() != null) {
         restart();
-        labyAPI.eventBus().fire(new ServiceEndEvent(""));
+        MusicPlayer.getLabyAPI().eventBus().fire(new ServiceEndEvent(""));
       }
       return Unit.INSTANCE;
     });
     delegate.registerListener(EventType.Companion.getSERVICE_ERROR(), event -> {
-      if (labyAPI != null) {
+      if (MusicPlayer.getLabyAPI() != null) {
         restart();
-        labyAPI.eventBus().fire(new ServiceEndEvent(event.getError()));
+        MusicPlayer.getLabyAPI().eventBus().fire(new ServiceEndEvent(event.getError()));
       }
       return Unit.INSTANCE;
     });
     delegate.registerListener(EventType.Companion.getSONG_CHANGE(), event -> {
-      if (labyAPI != null) {
-        labyAPI.eventBus().fire(new SongUpdateEvent(new Track() {
+      if (MusicPlayer.getLabyAPI() != null) {
+        MusicPlayer.getLabyAPI().eventBus().fire(new SongUpdateEvent(new Track() {
           @Override
           public String name() {
             return event.getState().getSong().getTitle();
@@ -105,9 +105,9 @@ public class JukeboxService extends AbstractService {
       return Unit.INSTANCE;
     });
     delegate.registerListener(EventType.Companion.getSERVICE_UNAUTHORIZED(), event -> {
-      if (labyAPI != null) {
+      if (MusicPlayer.getLabyAPI() != null) {
         restart();
-        labyAPI.eventBus().fire(new ServiceEndEvent("unauthorized"));
+        MusicPlayer.getLabyAPI().eventBus().fire(new ServiceEndEvent("unauthorized"));
       }
       return Unit.INSTANCE;
     });

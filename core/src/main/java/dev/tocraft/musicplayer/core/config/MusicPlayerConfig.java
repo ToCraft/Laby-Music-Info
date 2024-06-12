@@ -1,4 +1,4 @@
-package dev.tocraft.musicplayer.core;
+package dev.tocraft.musicplayer.core.config;
 
 import dev.tocraft.musicplayer.core.services.ServiceProvider;
 import dev.tocraft.musicplayer.core.services.ServiceProvider.ServiceType;
@@ -7,11 +7,12 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.Butto
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
+import net.labymod.api.configuration.loader.annotation.SpriteSlot;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.Setting;
+import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.MethodOrder;
 
-@SuppressWarnings("unused")
 @ConfigName("settings")
 public class MusicPlayerConfig extends AddonConfig {
 
@@ -19,10 +20,15 @@ public class MusicPlayerConfig extends AddonConfig {
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
   @DropdownSetting
-  private final ConfigProperty<ServiceType> serviceType = new ConfigProperty<>(ServiceType.CIDER_CLASSIC);
+  private final ConfigProperty<ServiceType> serviceType = new ConfigProperty<>(
+      ServiceType.CIDER_CLASSIC);
 
   @SwitchSetting
   private final ConfigProperty<Boolean> autoReconnect = new ConfigProperty<>(false);
+
+  @SettingSection("services")
+  @SpriteSlot(x = 1, y = 3)
+  private final JellyfinSettings jellyfin = new JellyfinSettings();
 
   @Override
   public ConfigProperty<Boolean> enabled() {
@@ -35,6 +41,10 @@ public class MusicPlayerConfig extends AddonConfig {
 
   public ConfigProperty<ServiceType> serviceType() {
     return this.serviceType;
+  }
+
+  public JellyfinSettings jellyfin() {
+    return jellyfin;
   }
 
   @ButtonSetting

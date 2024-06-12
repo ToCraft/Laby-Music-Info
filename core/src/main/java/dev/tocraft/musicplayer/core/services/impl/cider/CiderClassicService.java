@@ -7,8 +7,8 @@ import dev.tocraft.musicplayer.core.misc.Track;
 import dev.tocraft.musicplayer.core.services.WebSocketService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
-import net.labymod.api.LabyAPI;
 import net.labymod.api.client.gui.icon.Icon;
 
 public class CiderClassicService extends WebSocketService {
@@ -23,8 +23,8 @@ public class CiderClassicService extends WebSocketService {
     }
   }
 
-  public CiderClassicService(LabyAPI labyAPI) {
-    super(labyAPI, API_URL);
+  public CiderClassicService() {
+    super(API_URL, new HashMap<>());
   }
 
   public Track getTrackFromJson(JsonElement json) {

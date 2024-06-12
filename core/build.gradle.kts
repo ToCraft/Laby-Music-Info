@@ -8,6 +8,7 @@ dependencies {
     api(project(":api"))
 
     maven(mavenCentral(), "org.java-websocket:Java-WebSocket:1.5.6")
+    maven(mavenCentral(), "org.jellyfin.sdk:jellyfin-core:1.5.0-beta.3")
     maven("https://maven.resourcefulbees.com/repository/thatgravyboat", "tech.thatgravyboat:jukebox-jvm:1.0-SNAPSHOT")
     maven("https://jitpack.io/", "com.github.LabyStudio:java-spotify-api:1.2.0")
 }

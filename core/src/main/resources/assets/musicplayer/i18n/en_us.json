@@ -2,6 +2,11 @@
   "musicplayer": {
     "settings": {
       "name": "Music Player",
+      "header": {
+        "services": {
+          "name": "Services"
+        }
+      },
       "enabled": {
         "name": "Enabled"
       },
@@ -15,6 +20,28 @@
       "autoReconnect": {
         "name": "Auto reconnect",
         "description": "High Performance Impact"
+      },
+      "jellyfin": {
+        "name": "Jellyfin",
+        "serverURL": {
+          "name": "Server URL"
+        },
+        "accessToken": {
+          "name": "Access Token"
+        },
+        "username": {
+          "name": "Username",
+          "description": "Resets after the access token was generated."
+        },
+        "password": {
+          "name": "Password",
+          "description": "Resets after the access token was generated."
+        },
+        "generateAccessToken": {
+          "name": "Generate a Access Token",
+          "text": "Generate",
+          "description": "Resets the username & password field."
+        }
       }
     },
     "hudWidget": {
