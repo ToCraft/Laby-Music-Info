@@ -20,8 +20,7 @@ public class GameTickHandler {
       // handle autoReconnect feature
       if (addon.configuration().autoReconnect().get() && ServiceProvider.getCurrentService() != null
           && !ServiceProvider.getCurrentService().isActive()) {
-        ServiceProvider.updateCurrentService(addon);
-        ServiceProvider.connect();
+        ServiceProvider.reload();
       }
     }
   }

@@ -26,16 +26,19 @@
         "serverURL": {
           "name": "Server URL"
         },
+        "clientName": {
+          "name": "Client to be watched",
+          "description": "Optional. Recommended to prevent unwanted infos when using Jellyfin on multiple devices while playing."
+        },
         "accessToken": {
           "name": "Access Token"
         },
         "username": {
-          "name": "Username",
-          "description": "Resets after the access token was generated."
+          "name": "Username"
         },
         "password": {
           "name": "Password",
-          "description": "Resets after the access token was generated."
+          "description": "Clears after the access token was generated."
         },
         "generateAccessToken": {
           "name": "Generate a Access Token",

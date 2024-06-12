@@ -47,6 +47,14 @@ public class ServiceProvider {
     }
   }
 
+  public static void reload() {
+    MusicPlayer addon = MusicPlayer.getInstance();
+    if (addon != null) {
+      ServiceProvider.updateCurrentService(addon);
+    }
+    ServiceProvider.connect();
+  }
+
   @Nullable
   public static AbstractService getCurrentService() {
     return currentService;

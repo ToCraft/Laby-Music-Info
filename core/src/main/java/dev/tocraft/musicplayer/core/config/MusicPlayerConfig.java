@@ -50,6 +50,6 @@ public class MusicPlayerConfig extends AddonConfig {
   @ButtonSetting
   @MethodOrder(after = "serviceType")
   public void reconnect(Setting setting) {
-    ServiceProvider.connect();
+    ServiceProvider.reload();
   }
 }

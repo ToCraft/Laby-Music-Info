@@ -14,16 +14,24 @@ import org.jetbrains.annotations.Nullable;
 public class MusicPlayer extends LabyAddon<MusicPlayerConfig> {
 
   @Nullable
-  private static LabyAPI labyAPI;
+  private static MusicPlayer INSTANCE;
 
   @Nullable
+  public static MusicPlayer getInstance() {
+    return INSTANCE;
+  }
+
   public static LabyAPI getLabyAPI() {
-    return labyAPI;
+    if (INSTANCE != null) {
+      return INSTANCE.labyAPI();
+    } else {
+      return null;
+    }
   }
 
   @Override
   protected void enable() {
-    labyAPI = this.labyAPI();
+    INSTANCE = this;
 
     this.registerSettingCategory();
     this.registerCommand(new ReconnectCommand(this));

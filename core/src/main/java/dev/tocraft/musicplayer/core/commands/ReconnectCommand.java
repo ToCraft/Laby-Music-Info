@@ -14,8 +14,7 @@ public class ReconnectCommand extends Command {
 
   @Override
   public boolean execute(String prefix, String[] arguments) {
-    ServiceProvider.updateCurrentService(addon);
-    ServiceProvider.connect();
+    ServiceProvider.reload();
     this.displayMessage("Trying to reconnect now!");
     return true;
   }

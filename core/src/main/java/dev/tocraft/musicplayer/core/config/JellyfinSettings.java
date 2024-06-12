@@ -11,9 +11,11 @@ import net.labymod.api.util.MethodOrder;
 // TODO: Maybe create some option to select, which jellyfin client should be watched
 @SuppressWarnings("unused")
 public class JellyfinSettings extends Config {
-
   @TextFieldSetting
   private final ConfigProperty<String> serverURL = new ConfigProperty<>("http://localhost:8096");
+
+  @TextFieldSetting
+  private final ConfigProperty<String> clientName = new ConfigProperty<>("");
 
   @TextFieldSetting
   private final ConfigProperty<String> accessToken = new ConfigProperty<>("");
@@ -26,6 +28,10 @@ public class JellyfinSettings extends Config {
 
   public ConfigProperty<String> serverURL() {
     return serverURL;
+  }
+
+  public ConfigProperty<String> clientName() {
+    return clientName;
   }
 
   public ConfigProperty<String> accessToken() {
@@ -46,7 +52,6 @@ public class JellyfinSettings extends Config {
     this.accessToken().set(
         JellyfinService.getAccessToken(this.serverURL().get(), this.username().get(),
             this.password().get()));
-    this.username().reset();
     this.password().reset();
   }
 }

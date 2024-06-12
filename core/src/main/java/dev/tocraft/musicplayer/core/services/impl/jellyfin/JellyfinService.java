@@ -6,8 +6,9 @@ import dev.tocraft.musicplayer.core.events.ServiceEndEvent;
 import dev.tocraft.musicplayer.core.events.SongUpdateEvent;
 import dev.tocraft.musicplayer.core.misc.Track;
 import dev.tocraft.musicplayer.core.services.AbstractService;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import kotlin.jvm.JvmClassMappingKt;
@@ -22,31 +23,55 @@ import org.jellyfin.sdk.model.ClientInfo;
 import org.jellyfin.sdk.model.DeviceInfo;
 import org.jellyfin.sdk.model.api.AuthenticateUserByName;
 import org.jellyfin.sdk.model.api.AuthenticationResult;
+import org.jellyfin.sdk.model.api.BaseItemDto;
+import org.jellyfin.sdk.model.api.MediaType;
+import org.jellyfin.sdk.model.api.PlayerStateInfo;
+import org.jellyfin.sdk.model.api.SessionInfo;
 import org.jellyfin.sdk.model.api.SessionsMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-// TODO: Fix crash with wrong server url
 public class JellyfinService extends AbstractService {
 
-  // TODO: Replace with unique id
-  private static final DeviceInfo deviceInfo = new DeviceInfo("LABY", "user");
+  // just in case something goes wrong, we need a unique device id
+  private static final String fallbackDeviceId;
 
-  private static final Jellyfin jellyfin = JellyfinKt.createJellyfin(builder -> {
+  static {
+    StringBuilder tempFallbackId = new StringBuilder();
+    for (int i = 0; i <= 5; i++) {
+      tempFallbackId.append(new Random().nextInt());
+    }
+    fallbackDeviceId = tempFallbackId.toString();
+  }
+
+  private static DeviceInfo getDeviceInfo() {
+    String deviceName = "LabyMod-4";
+
+    MusicPlayer addon = MusicPlayer.getInstance();
+    if (addon != null) {
+      String tokenStart = addon.configuration().jellyfin().accessToken().get().substring(0, 5);
+      if (!tokenStart.isBlank()) {
+        return new DeviceInfo(tokenStart, deviceName);
+      }
+    }
+
+    return new DeviceInfo(fallbackDeviceId, deviceName);
+  }
+
+  private static final Jellyfin JELLYFIN = JellyfinKt.createJellyfin(builder -> {
     builder.setClientInfo(new ClientInfo("Laby-Music-Player", "1.0"));
-    builder.setDeviceInfo(deviceInfo);
+    builder.setDeviceInfo(getDeviceInfo());
     return Unit.INSTANCE;
   });
 
   @SuppressWarnings("unchecked")
   public static String getAccessToken(String url, String username, String password) {
     // setup APIs
-    ApiClient api = jellyfin.createApi(url);
+    ApiClient api = JELLYFIN.createApi(url);
     UserApi userApi = api.getOrCreateApi(JvmClassMappingKt.getKotlinClass(UserApi.class),
         UserApi::new);
 
     // Authenticate
-    // TODO: allow direct access token to be specified
     return ((Response<AuthenticationResult>) suspendToFuture(
         (coroutineScope, continuation) -> userApi.authenticateUserByName(
             new AuthenticateUserByName(username, password), continuation)).join()).getContent()
@@ -54,12 +79,14 @@ public class JellyfinService extends AbstractService {
   }
 
   private final ApiClient apiClient;
+  private final JellyfinSettings settings;
   @Nullable
   private Thread watchSessions = null;
 
   public JellyfinService(JellyfinSettings settings) {
+    this.settings = settings;
     // setup API
-    this.apiClient = jellyfin.createApi(settings.serverURL().get(), settings.accessToken().get());
+    this.apiClient = JELLYFIN.createApi(settings.serverURL().get(), settings.accessToken().get());
   }
 
   private void resetWatchSessions() {
@@ -69,42 +96,75 @@ public class JellyfinService extends AbstractService {
                 SessionsMessage.class)).collect(new FlowCollector<>() {
               @Nullable
               @Override
-              public Object emit(SessionsMessage sessionsMessage,
+              public Object emit(SessionsMessage message,
                   @NotNull Continuation<? super Unit> continuation) {
-                // TODO: Find currently playing song and send it to event
                 if (MusicPlayer.getLabyAPI() != null) {
-                  MusicPlayer.getLabyAPI().eventBus().fire(new SongUpdateEvent(new Track() {
-                    @Override
-                    public String name() {
-                      return "";
+                  List<SessionInfo> infoList = message.component1();
+                  if (infoList != null) {
+                    Track track = null;
+                    for (SessionInfo sessionInfo : infoList) {
+                      BaseItemDto nowPlaying = sessionInfo.getNowPlayingItem();
+                      // check if the session is listing to audio
+                      if (Objects.equals(sessionInfo.getUserName(), settings.username().get())
+                          && nowPlaying != null
+                          && nowPlaying.getMediaType() == MediaType.AUDIO) {
+                        track = new Track() {
+                          @Override
+                          public String name() {
+                            return nowPlaying.getName();
+                          }
+
+                          @Override
+                          public String album() {
+                            return nowPlaying.getAlbum();
+                          }
+
+                          @Override
+                          public int duration() {
+                            Long ticks = nowPlaying.getRunTimeTicks();
+                            if (ticks != null) {
+                              return (int) (ticks / 10000000);
+                            } else {
+                              return -1;
+                            }
+                          }
+
+                          @Override
+                          public int playTime() {
+                            PlayerStateInfo playerStateInfo = sessionInfo.getPlayState();
+                            if (playerStateInfo != null) {
+                              Long playTime = playerStateInfo.getPositionTicks();
+                              if (playTime != null) {
+                                return (int) (playTime / 10000000);
+                              }
+                            }
+                            return -1;
+                          }
+
+                          @Override
+                          public List<String> artists() {
+                            return nowPlaying.getArtists();
+                          }
+
+                          // TODO: Get Song Cover
+                          @Override
+                          public @Nullable Icon cover() {
+                            return null;
+                          }
+                        };
+
+                        if (settings.clientName().get().isBlank() || Objects.equals(
+                            sessionInfo.getDeviceName(),
+                            settings.clientName().get())) {
+                          break;
+                        }
+                      }
                     }
 
-                    @Override
-                    public String album() {
-                      return "";
+                    if (track != null) {
+                      MusicPlayer.getLabyAPI().eventBus().fire(new SongUpdateEvent(track));
                     }
-
-                    @Override
-                    public int duration() {
-                      Calendar calendar = Calendar.getInstance();
-                      return calendar.get(Calendar.SECOND) * 60 + calendar.get(Calendar.SECOND);
-                    }
-
-                    @Override
-                    public int playTime() {
-                      return -1;
-                    }
-
-                    @Override
-                    public List<String> artists() {
-                      return List.of();
-                    }
-
-                    @Override
-                    public @Nullable Icon cover() {
-                      return null;
-                    }
-                  }));
+                  }
                 }
                 return null;
               }
