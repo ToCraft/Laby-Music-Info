@@ -1,11 +1,11 @@
 package dev.tocraft.musicinfo.core.services.impl.jellyfin;
 
-import dev.tocraft.musicinfo.core.services.AbstractService;
 import dev.tocraft.musicinfo.core.MusicInfo;
 import dev.tocraft.musicinfo.core.config.JellyfinSettings;
 import dev.tocraft.musicinfo.core.events.ServiceEndEvent;
 import dev.tocraft.musicinfo.core.events.SongUpdateEvent;
 import dev.tocraft.musicinfo.core.misc.Track;
+import dev.tocraft.musicinfo.core.services.AbstractService;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -49,9 +49,17 @@ public class JellyfinService extends AbstractService {
 
     MusicInfo addon = MusicInfo.getInstance();
     if (addon != null) {
-      String tokenStart = addon.configuration().jellyfin().accessToken().get().substring(0, 5);
-      if (!tokenStart.isBlank()) {
-        return new DeviceInfo(tokenStart, deviceName);
+      String accessToken = addon.configuration().jellyfin().accessToken().get();
+      if (accessToken.length() >= 5) {
+        String tokenStart = addon.configuration().jellyfin().accessToken().get().substring(0, 5);
+        if (!tokenStart.isBlank()) {
+          return new DeviceInfo(tokenStart, deviceName);
+        }
+      }
+
+      String playerName = addon.labyAPI().getName();
+      if (!playerName.isBlank()) {
+        return new DeviceInfo(playerName, deviceName);
       }
     }
 
