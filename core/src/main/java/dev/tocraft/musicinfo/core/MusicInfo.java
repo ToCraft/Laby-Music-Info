@@ -12,8 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 @AddonMain
 public class MusicInfo extends LabyAddon<MusicInfoConfig> {
-  public static final String VERSION = "1.0";
-
   @Nullable
   private static MusicInfo INSTANCE;
 

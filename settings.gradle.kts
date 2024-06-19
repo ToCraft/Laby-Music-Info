@@ -11,10 +11,12 @@ pluginManagement {
             maven("https://dist.labymod.net/api/v1/maven/release/")
             maven("https://repo.spongepowered.org/repository/maven-public")
             mavenCentral()
+            gradlePluginPortal()
         }
 
         dependencies {
             classpath("net.labymod.gradle", "addon", labyGradlePluginVersion)
+            classpath("com.github.johnrengelman", "shadow", "8.1.1")
         }
     }
 }
