@@ -49,6 +49,7 @@ public class JellyfinSettings extends Config {
     return accessToken;
   }
 
+  @SuppressWarnings("unused")
   @ButtonSetting
   @MethodOrder(before = "accessToken")
   public void generateAccessToken(Setting setting) {

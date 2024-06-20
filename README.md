@@ -1,6 +1,6 @@
 # LabyMod Music Info Addon
 
-This small LabyMod addon features  a small music info widget, where you can see what song you're listing to!
+This small addon features a small music info widget, which displays you what song you're listing to!
 It can show you:
 - track name
 - artists
@@ -21,9 +21,11 @@ Right now, the following services are supported:
 - [Tidal](https://offer.tidal.com/download)
 
 ---
-## Spotify
+## Jellyfin
 
-Please note that you'll need  a spotify token in order for spotify to work.
+You need to specify the server URL, the username and a password / auth token in order for the addon to work with Jellyfin.
+Moreover, it's highly recommended to supply a client name to prevent the game to display music you hear on a different device. You can list all valid client names in the Jellyfin Admin Dashboard.
+And don't forget to generate an auth token (possible in the settings), if you only supply a password!
 
 ---
 

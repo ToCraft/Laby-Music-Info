@@ -24,7 +24,7 @@ public class MusicInfoConfig extends AddonConfig {
       ServiceType.CIDER_CLASSIC);
 
   @SwitchSetting
-  private final ConfigProperty<Boolean> autoReconnect = new ConfigProperty<>(false);
+  private final ConfigProperty<Boolean> autoReconnect = new ConfigProperty<>(true);
 
   @SettingSection("services")
   @SpriteSlot(x = 1, y = 3)
@@ -47,14 +47,10 @@ public class MusicInfoConfig extends AddonConfig {
     return jellyfin;
   }
 
+  @SuppressWarnings("unused")
   @ButtonSetting
   @MethodOrder(after = "serviceType")
   public void reconnect(Setting setting) {
     ServiceProvider.reload();
-  }
-
-  @Override
-  public int getConfigVersion() {
-    return 1;
   }
 }

@@ -6,6 +6,7 @@ import net.labymod.api.event.Phase;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
 
+@SuppressWarnings("unused")
 public class GameTickHandler {
 
   private final MusicInfo addon;
