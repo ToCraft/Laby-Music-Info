@@ -1,5 +1,7 @@
 # LabyMod Music Info Addon
 
+<img src="assets/Icon.png" alt="Icon" width="200"/>
+
 This small addon features a small music info widget, which displays you what song you're listing to!
 It can show you:
 - track name
@@ -11,6 +13,10 @@ It can show you:
 
 Coming soon:
 - cover widget
+
+<img src="assets/Preview_01.png" alt="Preview" width="480"/>
+
+---
 
 Right now, the following services are supported:
 - [Cider Classic](https://github.com/ciderapp/Cider)
