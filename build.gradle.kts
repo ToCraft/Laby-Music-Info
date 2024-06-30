@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.tocraft"
-version = System.getenv().getOrDefault("VERSION", "1.0.0")
+version = System.getenv().getOrDefault("VERSION", "1.0.1")
 
 labyMod {
     defaultPackageName = "dev.tocraft.musicinfo"
