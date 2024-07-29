@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.tocraft"
-version = System.getenv().getOrDefault("VERSION", "1.0.1")
+version = System.getenv().getOrDefault("VERSION", properties["version"] as String)
 
 labyMod {
     defaultPackageName = "dev.tocraft.musicinfo"
@@ -33,6 +33,7 @@ labyMod {
                 "1.20.4",
                 "1.20.5",
                 "1.20.6",
+                "1.21",
         ) { version, provider ->
             configureRun(provider, version)
         }

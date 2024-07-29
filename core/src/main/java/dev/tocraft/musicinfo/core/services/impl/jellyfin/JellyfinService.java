@@ -6,6 +6,10 @@ import dev.tocraft.musicinfo.core.events.ServiceEndEvent;
 import dev.tocraft.musicinfo.core.events.SongUpdateEvent;
 import dev.tocraft.musicinfo.core.misc.Track;
 import dev.tocraft.musicinfo.core.services.AbstractService;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -34,18 +38,36 @@ import org.jetbrains.annotations.Nullable;
 public class JellyfinService extends AbstractService {
 
   // just in case something goes wrong, we need a unique device id
-  private static final String fallbackDeviceId;
+  private static final String deviceId;
 
   static {
-    StringBuilder tempFallbackId = new StringBuilder();
-    for (int i = 0; i <= 5; i++) {
-      tempFallbackId.append(new Random().nextInt());
+    StringBuilder tempDeviceId = new StringBuilder();
+    try {
+      InetAddress localhost = InetAddress.getLocalHost();
+      NetworkInterface ni = NetworkInterface.getByInetAddress(localhost);
+      byte[] hardwareAddress = ni.getHardwareAddress();
+      String[] hexadecimalFormat = new String[hardwareAddress.length];
+      for (int i = 0; i < hardwareAddress.length; i++) {
+        hexadecimalFormat[i] = String.format("%02X", hardwareAddress[i]);
+      }
+      tempDeviceId.append(String.join("-", hexadecimalFormat));
+    } catch (UnknownHostException | SocketException e) {
+      StringBuilder tempFallbackId = new StringBuilder();
+      for (int i = 0; i <= 5; i++) {
+        tempFallbackId.append(new Random().nextInt());
+      }
+      tempDeviceId.append(tempFallbackId);
     }
-    fallbackDeviceId = tempFallbackId.toString();
+    deviceId = tempDeviceId.toString();
   }
 
   private static DeviceInfo getDeviceInfo() {
-    String deviceName = "LabyMod-4";
+    String deviceName;
+    try {
+      deviceName = InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      deviceName = "LabyMod-4";
+    }
 
     MusicInfo addon = MusicInfo.getInstance();
     if (addon != null) {
@@ -63,11 +85,12 @@ public class JellyfinService extends AbstractService {
       }
     }
 
-    return new DeviceInfo(fallbackDeviceId, deviceName);
+    return new DeviceInfo(deviceId, deviceName);
   }
 
   private static final Jellyfin JELLYFIN = JellyfinKt.createJellyfin(builder -> {
-    builder.setClientInfo(new ClientInfo("Laby-Music-Info", "1.0"));
+    builder.setClientInfo(new ClientInfo("Laby-Music-Info",
+        MusicInfo.getInstance() != null ? MusicInfo.getInstance().addonInfo().getVersion() : "1.0"));
     builder.setDeviceInfo(getDeviceInfo());
     return Unit.INSTANCE;
   });
