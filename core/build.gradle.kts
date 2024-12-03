@@ -13,7 +13,6 @@ dependencies {
 
     maven(mavenCentral(), "org.java-websocket:Java-WebSocket:1.5.6")
     maven(mavenCentral(), "org.jellyfin.sdk:jellyfin-core:1.5.0-beta.3")
-    maven("https://jitpack.io/", "com.github.LabyStudio:java-spotify-api:1.2.0")
 
     // shade in case it vanishes
     shade("tech.thatgravyboat:jukebox-jvm:1.0-SNAPSHOT")

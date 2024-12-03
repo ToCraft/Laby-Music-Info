@@ -22,7 +22,6 @@ Right now, the following services are supported:
 - [Cider Classic](https://github.com/ciderapp/Cider)
 - [Cider](https://cider.sh)
 - [Every Jellyfin Client](https://jellyfin.org/)
-- [Spotify](https://open.spotify.com/download)
 - [beefweb](https://github.com/hyperblast/beefweb)
 - [Tidal](https://offer.tidal.com/download)
 
