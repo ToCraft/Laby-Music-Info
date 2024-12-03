@@ -1,4 +1,4 @@
-version = "0.1.0"
+version = rootProject.version
 
 plugins {
     id("com.github.johnrengelman.shadow")
@@ -11,8 +11,8 @@ val shade: Configuration by configurations.creating {
 dependencies {
     api(project(":api"))
 
-    maven(mavenCentral(), "org.java-websocket:Java-WebSocket:1.5.6")
-    maven(mavenCentral(), "org.jellyfin.sdk:jellyfin-core:1.5.0-beta.3")
+    maven(mavenCentral(), "org.java-websocket:Java-WebSocket:1.5.7")
+    maven(mavenCentral(), "org.jellyfin.sdk:jellyfin-core:1.6.3")
 
     // shade in case it vanishes
     shade("tech.thatgravyboat:jukebox-jvm:1.0-SNAPSHOT")

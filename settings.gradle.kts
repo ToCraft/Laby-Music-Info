@@ -1,7 +1,7 @@
 rootProject.name = "labymod4-music-info"
 
 pluginManagement {
-    val labyGradlePluginVersion = "0.4.6"
+    val labyGradlePluginVersion = "0.5.7"
     plugins {
         id("net.labymod.gradle") version (labyGradlePluginVersion)
     }
