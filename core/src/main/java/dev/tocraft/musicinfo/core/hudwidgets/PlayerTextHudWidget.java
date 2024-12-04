@@ -12,6 +12,8 @@ import net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.event.Subscribe;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig> {
 
@@ -60,7 +62,7 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
   }
 
   @Subscribe
-  public void onSongUpdate(SongUpdateEvent event) {
+  public void onSongUpdate(@NotNull SongUpdateEvent event) {
     setTextField(trackLine, event.track().name());
     setTextField(artistsLine, event.track().artists());
     setTextField(albumLine, event.track().album());
@@ -69,7 +71,7 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
     setTextField(remainingTimeLine, formatTime(event.track().remainingTime()));
   }
 
-  private static void setTextField(TextLine line, Object value) {
+  private static void setTextField(@NotNull TextLine line, Object value) {
     if (line.state() != State.DISABLED) {
       if ((value instanceof String s && s.isBlank())
           || (value instanceof Collection<?> c && c.isEmpty())
@@ -95,7 +97,7 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
   }
 
   @Subscribe
-  public void onServiceEnd(ServiceEndEvent event) {
+  public void onServiceEnd(@NotNull ServiceEndEvent event) {
     // disable items - no song playing
     if (!event.error().isBlank()) {
       this.trackLine.updateAndFlush(event.error());
@@ -123,7 +125,8 @@ public class PlayerTextHudWidget extends TextHudWidget<PlayerTextHudWidgetConfig
         && ServiceProvider.getCurrentService().isActive();
   }
 
-  private String formatTime(int durationInSeconds) {
+  @Contract(pure = true)
+  private @NotNull String formatTime(int durationInSeconds) {
     if (durationInSeconds < 0) {
       return "";
     }
