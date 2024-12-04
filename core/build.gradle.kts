@@ -1,4 +1,4 @@
-version = rootProject.version
+import net.labymod.labygradle.common.extension.LabyModAnnotationProcessorExtension.ReferenceType
 
 plugins {
     id("com.github.johnrengelman.shadow")
@@ -9,18 +9,20 @@ val shade: Configuration by configurations.creating {
 }
 
 dependencies {
+    labyProcessor()
     api(project(":api"))
 
-    maven(mavenCentral(), "org.java-websocket:Java-WebSocket:1.5.7")
-    maven(mavenCentral(), "org.jellyfin.sdk:jellyfin-core:1.6.3")
+    addonMavenDependency("org.java-websocket:Java-WebSocket:1.5.7")
+    addonMavenDependency("org.jellyfin.sdk:jellyfin-core:1.6.3")
 
     // shade in case it vanishes
     shade("tech.thatgravyboat:jukebox-jvm:1.0-SNAPSHOT")
 }
 
-labyModProcessor {
-    referenceType = net.labymod.gradle.core.processor.ReferenceType.DEFAULT
+labyModAnnotationProcessor {
+    referenceType = ReferenceType.DEFAULT
 }
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21

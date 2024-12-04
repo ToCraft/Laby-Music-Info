@@ -1,15 +1,12 @@
-version = rootProject.version
-
-plugins {
-    id("java-library")
-}
+import net.labymod.labygradle.common.extension.LabyModAnnotationProcessorExtension.ReferenceType
 
 dependencies {
+    labyProcessor()
     labyApi("api")
 }
 
-labyModProcessor {
-    referenceType = net.labymod.gradle.core.processor.ReferenceType.INTERFACE
+labyModAnnotationProcessor {
+    referenceType = ReferenceType.INTERFACE
 }
 
 java {

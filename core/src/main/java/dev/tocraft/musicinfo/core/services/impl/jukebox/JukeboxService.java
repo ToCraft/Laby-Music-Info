@@ -8,6 +8,7 @@ import dev.tocraft.musicinfo.core.misc.Track;
 import java.util.List;
 import kotlin.Unit;
 import net.labymod.api.client.gui.icon.Icon;
+import org.jetbrains.annotations.NotNull;
 import tech.thatgravyboat.jukebox.api.events.EventType;
 import tech.thatgravyboat.jukebox.api.service.BaseService;
 import tech.thatgravyboat.jukebox.api.service.ServicePhase;
@@ -16,7 +17,7 @@ public class JukeboxService extends AbstractService {
 
   private final BaseService delegate;
 
-  public JukeboxService(BaseService delegate) {
+  public JukeboxService(@NotNull BaseService delegate) {
     this.delegate = delegate;
     this.delegate.registerListener(EventType.Companion.getUPDATE(), event -> {
       if (MusicInfo.getLabyAPI() != null) {

@@ -30,8 +30,9 @@ import org.jellyfin.sdk.model.api.AuthenticationResult;
 import org.jellyfin.sdk.model.api.BaseItemDto;
 import org.jellyfin.sdk.model.api.MediaType;
 import org.jellyfin.sdk.model.api.PlayerStateInfo;
-import org.jellyfin.sdk.model.api.SessionInfo;
+import org.jellyfin.sdk.model.api.SessionInfoDto;
 import org.jellyfin.sdk.model.api.SessionsMessage;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +62,8 @@ public class JellyfinService extends AbstractService {
     deviceId = tempDeviceId.toString();
   }
 
-  private static DeviceInfo getDeviceInfo() {
+  @Contract(" -> new")
+  private static @NotNull DeviceInfo getDeviceInfo() {
     String deviceName;
     try {
       deviceName = InetAddress.getLocalHost().getHostName();
@@ -130,10 +132,10 @@ public class JellyfinService extends AbstractService {
               public Object emit(SessionsMessage message,
                   @NotNull Continuation<? super Unit> continuation) {
                 if (MusicInfo.getLabyAPI() != null) {
-                  List<SessionInfo> infoList = message.component1();
+                  List<SessionInfoDto> infoList = message.getData();
                   if (infoList != null) {
                     Track track = null;
-                    for (SessionInfo sessionInfo : infoList) {
+                    for (SessionInfoDto sessionInfo : infoList) {
                       BaseItemDto nowPlaying = sessionInfo.getNowPlayingItem();
                       // check if the session is listing to audio
                       if (Objects.equals(sessionInfo.getUserName(), settings.username().get())

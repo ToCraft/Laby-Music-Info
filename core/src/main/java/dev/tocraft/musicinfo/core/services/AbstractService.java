@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
+import com.google.gson.Strictness;
 import com.google.gson.stream.JsonReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,7 +69,7 @@ public abstract class AbstractService {
   public static JsonElement fromJson(String json) throws JsonParseException {
     try {
       JsonReader jsonReader = new JsonReader(new StringReader(json));
-      jsonReader.setLenient(false);
+      jsonReader.setStrictness(Strictness.LENIENT);
       return GSON.getAdapter(JsonElement.class).read(jsonReader);
     } catch (IOException e) {
       throw new JsonParseException(e);

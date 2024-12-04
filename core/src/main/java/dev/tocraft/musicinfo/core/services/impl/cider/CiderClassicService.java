@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import net.labymod.api.client.gui.icon.Icon;
+import org.jetbrains.annotations.NotNull;
 
 public class CiderClassicService extends WebSocketService {
 
@@ -27,7 +28,7 @@ public class CiderClassicService extends WebSocketService {
     super(API_URL, new HashMap<>());
   }
 
-  public Track getTrackFromJson(JsonElement json) {
+  public Track getTrackFromJson(@NotNull JsonElement json) {
     JsonObject data = json.getAsJsonObject().get("data").getAsJsonObject();
     return new Track() {
       @Override
