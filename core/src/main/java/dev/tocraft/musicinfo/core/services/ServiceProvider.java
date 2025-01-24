@@ -4,6 +4,7 @@ import dev.tocraft.musicinfo.core.services.impl.cider.CiderClassicService;
 import dev.tocraft.musicinfo.core.services.impl.jellyfin.JellyfinService;
 import dev.tocraft.musicinfo.core.services.impl.jukebox.JukeboxService;
 import dev.tocraft.musicinfo.core.MusicInfo;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tech.thatgravyboat.jukebox.impl.cider.CiderService;
 import tech.thatgravyboat.jukebox.impl.foobar.FoobarService;
@@ -17,7 +18,7 @@ public class ServiceProvider {
   public enum ServiceType {
     CIDER_CLASSIC, CIDER, JELLYFIN, BEEFWEB, TIDAL;
 
-    public AbstractService getService(MusicInfo addon) {
+    public @NotNull AbstractService getService(MusicInfo addon) {
       return switch (this) {
         case CIDER_CLASSIC -> new CiderClassicService();
         case CIDER -> new JukeboxService(new CiderService());

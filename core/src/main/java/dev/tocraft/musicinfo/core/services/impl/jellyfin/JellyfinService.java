@@ -119,7 +119,7 @@ public class JellyfinService extends AbstractService {
   @Nullable
   private Thread watchSessions = null;
 
-  public JellyfinService(JellyfinSettings settings) {
+  public JellyfinService(@NotNull JellyfinSettings settings) {
     this.settings = settings;
     // setup API
     this.apiClient = JELLYFIN.createApi(settings.serverURL().get(), settings.accessToken().get());

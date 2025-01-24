@@ -8,6 +8,7 @@ import dev.tocraft.musicinfo.core.services.ServiceProvider;
 import net.labymod.api.LabyAPI;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 @AddonMain
@@ -20,7 +21,8 @@ public class MusicInfo extends LabyAddon<MusicInfoConfig> {
     return INSTANCE;
   }
 
-  public static LabyAPI getLabyAPI() {
+  @Contract(pure = true)
+  public static @Nullable LabyAPI getLabyAPI() {
     if (INSTANCE != null) {
       return INSTANCE.labyAPI();
     } else {

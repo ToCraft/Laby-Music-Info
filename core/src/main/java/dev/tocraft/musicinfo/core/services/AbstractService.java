@@ -78,7 +78,7 @@ public abstract class AbstractService {
 
   @Internal
   @NotNull
-  private static String getResponse(Map<String, String> header, URL url) throws IOException {
+  private static String getResponse(@NotNull Map<String, String> header, @NotNull URL url) throws IOException {
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     for (Map.Entry<String, String> entry : header.entrySet()) {
       connection.addRequestProperty(entry.getKey(), entry.getValue());
@@ -88,7 +88,7 @@ public abstract class AbstractService {
     return s;
   }
 
-  protected static String getStringFromInputStream(InputStream inputStream) throws IOException {
+  protected static @NotNull String getStringFromInputStream(InputStream inputStream) throws IOException {
     BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
     String inputLine;
     StringBuilder content = new StringBuilder();

@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.Map;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class WebSocketService extends AbstractService {
@@ -25,7 +26,8 @@ public abstract class WebSocketService extends AbstractService {
   }
 
 
-  private WebSocketClient setupClient(URI apiURI, Map<String, String> httpHeaders) {
+  @Contract("_, _ -> new")
+  private @NotNull WebSocketClient setupClient(URI apiURI, Map<String, String> httpHeaders) {
     return new WebSocketClient(apiURI, httpHeaders) {
       @Override
       public void onOpen(ServerHandshake handshakeData) {
