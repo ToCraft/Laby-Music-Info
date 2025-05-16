@@ -1,10 +1,10 @@
 package dev.tocraft.musicinfo.core.services.impl.jukebox;
 
-import dev.tocraft.musicinfo.core.services.AbstractService;
 import dev.tocraft.musicinfo.core.MusicInfo;
 import dev.tocraft.musicinfo.core.events.ServiceEndEvent;
 import dev.tocraft.musicinfo.core.events.SongUpdateEvent;
 import dev.tocraft.musicinfo.core.misc.Track;
+import dev.tocraft.musicinfo.core.services.AbstractService;
 import java.util.List;
 import kotlin.Unit;
 import net.labymod.api.client.gui.icon.Icon;

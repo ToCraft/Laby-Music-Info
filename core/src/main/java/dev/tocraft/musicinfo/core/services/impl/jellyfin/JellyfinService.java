@@ -95,7 +95,8 @@ public class JellyfinService extends AbstractService {
 
   private static final Jellyfin JELLYFIN = JellyfinKt.createJellyfin(builder -> {
     builder.setClientInfo(new ClientInfo("Laby-Music-Info",
-        MusicInfo.getInstance() != null ? MusicInfo.getInstance().addonInfo().getVersion() : "1.0"));
+        MusicInfo.getInstance() != null ? MusicInfo.getInstance().addonInfo().getVersion()
+            : "1.0"));
     builder.setDeviceInfo(getDeviceInfo());
     return Unit.INSTANCE;
   });

@@ -9,6 +9,7 @@ dependencies {
     api(project(":api"))
 
     addonMavenDependency("org.java-websocket:Java-WebSocket:1.6.0")
+    addonMavenDependency("io.socket:socket.io-client:2.1.2")
     addonMavenDependency("org.jellyfin.sdk:jellyfin-core:1.6.8")
     addonMavenDependency("tech.thatgravyboat:jukebox-jvm:1.1")
 }

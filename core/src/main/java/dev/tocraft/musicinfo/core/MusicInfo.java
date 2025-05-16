@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 @AddonMain
 public class MusicInfo extends LabyAddon<MusicInfoConfig> {
+
   @Nullable
   private static MusicInfo INSTANCE;
 

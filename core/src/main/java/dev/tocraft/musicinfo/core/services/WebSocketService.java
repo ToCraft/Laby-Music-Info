@@ -1,9 +1,9 @@
 package dev.tocraft.musicinfo.core.services;
 
 import com.google.gson.JsonElement;
+import dev.tocraft.musicinfo.core.MusicInfo;
 import dev.tocraft.musicinfo.core.events.SongUpdateEvent;
 import dev.tocraft.musicinfo.core.misc.Track;
-import dev.tocraft.musicinfo.core.MusicInfo;
 import java.net.URI;
 import java.util.Map;
 import org.java_websocket.client.WebSocketClient;
@@ -36,19 +36,28 @@ public abstract class WebSocketService extends AbstractService {
       @Override
       public void onMessage(String message) {
         if (MusicInfo.getLabyAPI() != null) {
-          MusicInfo.getLabyAPI().eventBus()
-              .fire(new SongUpdateEvent(getTrackFromJson(fromJson(message))));
+          Track track = getTrackFromJson(fromJson(message));
+          if (track != null) {
+            MusicInfo.getLabyAPI().eventBus().fire(new SongUpdateEvent(track));
+          }
         }
       }
 
       @Override
       public void onClose(int code, String reason, boolean remote) {
-        System.out.println("Websocket closed.");
+        if (MusicInfo.getInstance() != null) {
+          MusicInfo.getInstance().logger().debug("Websocket closed.");
+        }
       }
 
       @Override
       public void onError(Exception e) {
-        System.out.println("Got an error: " + e.getMessage());
+        if (MusicInfo.getInstance() != null) {
+          MusicInfo.getInstance().logger().error("Error on WebSocket!", e.getMessage());
+        } else {
+          //noinspection CallToPrintStackTrace
+          e.printStackTrace();
+        }
       }
     };
   }

@@ -11,6 +11,7 @@ import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.MethodOrder;
 
 public class JellyfinSettings extends Config {
+
   @SpriteSlot
   @SettingSection("generic")
   @TextFieldSetting
