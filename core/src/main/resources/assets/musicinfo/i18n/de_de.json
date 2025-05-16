@@ -22,7 +22,7 @@
         },
         "clientName": {
           "name": "Zu beobachtender Client",
-          "description": "Optional. Empfohlen, wenn mehrere clients eines Nutzers gleichzeitig Jellyfin verwenden, um die richtigen Infos anzuzeigen."
+          "description": "Optional. Empfohlen, wenn mehrere Clients eines Nutzers gleichzeitig Jellyfin verwenden, um die richtigen Infos anzuzeigen."
         },
         "accessToken": {
           "name": "Schlüssel"
@@ -37,7 +37,7 @@
         "generateAccessToken": {
           "name": "Schlüssel generieren",
           "text": "Generieren",
-          "description": "Setzt das Benutzernamen- & das Passwort-Feld zurück."
+          "description": "Empfohlen. Versteckt das Passwort, kann ein paar Sekunden brauchen."
         }
       }
     },

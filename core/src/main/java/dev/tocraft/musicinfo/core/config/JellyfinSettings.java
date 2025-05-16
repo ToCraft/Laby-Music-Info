@@ -9,6 +9,7 @@ import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.Setting;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.MethodOrder;
+import java.util.concurrent.CompletableFuture;
 
 public class JellyfinSettings extends Config {
 
@@ -54,9 +55,15 @@ public class JellyfinSettings extends Config {
   @ButtonSetting
   @MethodOrder(before = "accessToken")
   public void generateAccessToken(Setting setting) {
-    this.accessToken().set(
-        JellyfinService.getAccessToken(this.serverURL().get(), this.username().get(),
-            this.password().get()));
-    this.password().reset();
+    String serverUrl = this.serverURL().get();
+    String username = this.username().get();
+    String password = this.password().get();
+
+    // don't crash the client when the server is unreachable
+    CompletableFuture.runAsync(() -> {
+      this.accessToken().set(
+          JellyfinService.getAccessToken(serverUrl, username, password));
+      this.password().reset();
+    });
   }
 }

@@ -50,7 +50,7 @@
         "generateAccessToken": {
           "name": "Generate a Access Token",
           "text": "Generate",
-          "description": "Resets the username & password field."
+          "description": "Recommended. Hides the password, might take a few seconds."
         }
       }
     },
