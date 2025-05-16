@@ -42,7 +42,7 @@ subprojects {
     repositories {
         maven("https://libraries.minecraft.net/")
         maven("https://repo.spongepowered.org/repository/maven-public/")
-        maven("https://maven.resourcefulbees.com/repository/thatgravyboat/")
+        maven("https://maven.tocraft.dev/public")
         maven("https://jitpack.io")
     }
 }
